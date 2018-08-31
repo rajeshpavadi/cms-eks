@@ -1,0 +1,62 @@
+---
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Amazon EKS Using CloudFormation Template
+
+Parameters:
+
+  SecurityGroupId:
+    Type: String
+    Description: Security group for the cluster control plane communication with worker nodes.
+
+  SubnetId1:
+    Type: String
+    Description: subnet1 in the VPC
+
+  SubnetId2:
+    Type: String
+    Description: subnet2 in the VPC
+
+  SubnetId3:
+    Type: String
+    Description: subnet3 in the VPC
+
+  EksName:
+    Type: String
+    Description: Eks cluster name (required)
+
+  RoleName:
+    Type: String
+    Description: AmazonEKSServicePolicy policy for the AWSServiceRoleForAmazonEKS IAM role
+
+Resources:
+  EKS:
+    Type: AWS::EKS::Cluster
+    Properties:
+      Name: !Ref EksName
+      Version: "1.10"
+      RoleArn: !GetAtt ClusterRole.Arn
+      ResourcesVpcConfig:
+        SecurityGroupIds: [!Ref SecurityGroupId]
+        SubnetIds: [!Ref SubnetId1 , !Ref SubnetId2, !Ref SubnetId3]
+
+  ClusterRole:
+    Description: Allows EKS to manage clusters on your behalf.
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Ref RoleName
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+            Effect: Allow
+            Principal:
+              Service:
+                - eks.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns: 
+        - arn:aws:iam::aws:policy/AmazonEKSClusterPolicy
+        - arn:aws:iam::aws:policy/AmazonEKSServicePolicy
+              
+Outputs:
+  ApiEndPoint:
+    Description: AWS API Endpoint
+    Value: !GetAtt EKS.Endpoint

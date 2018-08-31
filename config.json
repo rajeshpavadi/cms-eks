@@ -1,0 +1,26 @@
+[
+    {
+      "ParameterKey": "RoleName",
+      "ParameterValue": ""
+    },
+    {
+      "ParameterKey": "SecurityGroupId",
+      "ParameterValue": ""
+    },
+    {
+        "ParameterKey": "SubnetId1",
+        "ParameterValue": ""
+      },
+      {
+        "ParameterKey": "SubnetId2",
+        "ParameterValue": ""
+      },
+      {
+        "ParameterKey": "SubnetId3",
+        "ParameterValue": ""
+      },
+      {
+        "ParameterKey": "EksName",
+        "ParameterValue": ""
+      }
+ ]
